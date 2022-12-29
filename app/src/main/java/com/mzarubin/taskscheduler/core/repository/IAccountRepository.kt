@@ -1,0 +1,3 @@
+package com.mzarubin.taskscheduler.core.repository
+
+interface IAccountRepository
