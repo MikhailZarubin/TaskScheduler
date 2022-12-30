@@ -4,6 +4,7 @@ import com.mzarubin.taskscheduler.core.repository.IAccountRepository
 import com.mzarubin.taskscheduler.core.repository.IInitializationRepository
 import com.mzarubin.taskscheduler.di.module.ApplicationModule
 import dagger.Component
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Singleton
 
 @Singleton

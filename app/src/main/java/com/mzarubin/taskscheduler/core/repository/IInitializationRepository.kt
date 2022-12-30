@@ -1,3 +1,6 @@
 package com.mzarubin.taskscheduler.core.repository
 
-interface IInitializationRepository
+interface IInitializationRepository {
+    fun isFirstLaunchApplication(): Boolean
+    fun isUserAuthorized(): Boolean
+}

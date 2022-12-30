@@ -9,5 +9,11 @@ import javax.inject.Singleton
 class InitializationRepository @Inject constructor(
     private val sharedPreferences: SharedPreferences?
 ) : IInitializationRepository {
+    override fun isFirstLaunchApplication(): Boolean {
+        return true
+    }
 
+    override fun isUserAuthorized(): Boolean {
+        return true
+    }
 }
