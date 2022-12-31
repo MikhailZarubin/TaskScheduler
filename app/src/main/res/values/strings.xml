@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">TaskScheduler</string>
     <string name="shared_preference_name">task_scheduler_shared_preference</string>
+    <string name="welcome_text">Welcome to the Task Scheduler application!</string>
+    <string name="close">Close</string>
 </resources>

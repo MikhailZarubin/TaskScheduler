@@ -7,7 +7,5 @@ import javax.inject.Singleton
 
 @Singleton
 class AccountRepository @Inject constructor(
-    private val sharedPreferences: SharedPreferences?
-) : IAccountRepository {
-
-}
+    private val sharedPreferences: SharedPreferences
+) : IAccountRepository

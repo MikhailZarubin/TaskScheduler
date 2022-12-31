@@ -4,17 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.ViewModelProvider
 import com.mzarubin.taskscheduler.core.viewmodel.InitializationViewModel
 import com.mzarubin.taskscheduler.databinding.FragmentInitializationBinding
 import com.mzarubin.taskscheduler.datamodel.InitializationState
 import com.mzarubin.taskscheduler.datamodel.LoadingState
-import dagger.hilt.android.AndroidEntryPoint
+import com.mzarubin.taskscheduler.di.viewmodel.ViewModelFactory
+import dagger.android.support.DaggerFragment
+import javax.inject.Inject
 
-@AndroidEntryPoint
-class InitializationFragment: Fragment() {
+class InitializationFragment : DaggerFragment() {
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
     private var _binding: FragmentInitializationBinding? = null
     private val binding: FragmentInitializationBinding get() = _binding!!
 
@@ -30,12 +32,12 @@ class InitializationFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val viewModel: InitializationViewModel by viewModels()
+        val viewModel =
+            ViewModelProvider(this, viewModelFactory)[InitializationViewModel::class.java]
         viewModel.handleOnCreateView()
 
         viewModel.loadingStateLiveData.observe(viewLifecycleOwner) {
-            when(it) {
+            when (it) {
                 LoadingState.ACTIVE -> binding.loadingProgressBar.visibility = View.VISIBLE
                 LoadingState.INACTIVE -> binding.loadingProgressBar.visibility = View.GONE
                 else -> {}
@@ -43,10 +45,16 @@ class InitializationFragment: Fragment() {
         }
 
         viewModel.initializationLiveData.observe(viewLifecycleOwner) {
-            when(it) {
-                InitializationState.AUTHORIZATION_REQUIRED -> {}
-                InitializationState.AUTHORIZATION_IS_NOT_REQUIRED -> {}
-                InitializationState.FIRST_LAUNCH_APPLICATION -> {}
+            when (it) {
+                InitializationState.AUTHORIZATION_IS_NOT_REQUIRED -> {
+                    // TODO: open profile activity
+                }
+                InitializationState.AUTHORIZATION_REQUIRED -> {
+                    // TODO: open authorization activity
+                }
+                InitializationState.FIRST_LAUNCH_APPLICATION -> {
+                    // TODO: open authorization activity with first launch flag
+                }
                 else -> {}
             }
         }

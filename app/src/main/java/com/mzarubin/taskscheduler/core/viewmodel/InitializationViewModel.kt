@@ -3,19 +3,14 @@ package com.mzarubin.taskscheduler.core.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.mzarubin.taskscheduler.core.repository.IAccountRepository
 import com.mzarubin.taskscheduler.core.repository.IInitializationRepository
 import com.mzarubin.taskscheduler.datamodel.InitializationState
 import com.mzarubin.taskscheduler.datamodel.LoadingState
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
 class InitializationViewModel @Inject constructor(
-    private val initializationRepository: IInitializationRepository,
-    private val accountRepository: IAccountRepository
+    private val initializationRepository: IInitializationRepository
 ) : BaseViewModel() {
     private val _initializationStateLiveData: MutableLiveData<InitializationState> =
         MutableLiveData()
@@ -28,6 +23,7 @@ class InitializationViewModel @Inject constructor(
 
         viewModelScope.launch {
             initializationState = if (initializationRepository.isFirstLaunchApplication()) {
+                initializationRepository.clearFirstLaunchState()
                 InitializationState.FIRST_LAUNCH_APPLICATION
             } else {
                 if (initializationRepository.isUserAuthorized()) {

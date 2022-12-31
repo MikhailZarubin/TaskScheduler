@@ -11,6 +11,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+@Suppress("PropertyName")
 abstract class BaseViewModel : ViewModel() {
     protected val _loadingStateLiveData: MutableLiveData<LoadingState> = MutableLiveData()
     val loadingStateLiveData: LiveData<LoadingState> = _loadingStateLiveData
