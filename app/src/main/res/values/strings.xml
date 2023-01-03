@@ -1,6 +1,25 @@
 <resources>
     <string name="app_name">TaskScheduler</string>
     <string name="shared_preference_name">task_scheduler_shared_preference</string>
+
     <string name="welcome_text">Welcome to the Task Scheduler application!</string>
     <string name="close">Close</string>
+
+    <string name="login_hint">login</string>
+    <string name="password_hint">password</string>
+    <string name="sign_in_text">Sing In</string>
+    <string name="sign_up_text">Sign Up</string>
+    <string name="account_not_found">Account was not found. Please sign up.</string>
+    <string name="incorrect_account_info">incorrect login or password. Please try again.</string>
+
+    <string name="header_sign_up">Let\'s register!</string>
+    <string name="field_name">Your name: </string>
+    <string name="field_surname">Your surname: </string>
+    <string name="field_login">Invent login: </string>
+    <string name="field_password">Invent password: </string>
+    <string name="field_repeat_password">Repeat password: </string>
+    <string name="account_exist">Account with this login already exists.</string>
+    <string name="fields_not_filled">All fields must be filled!</string>
+    <string name="password_no_match">Passwords don\'t match!</string>
+    <string name="done_text">Done</string>
 </resources>

@@ -2,7 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
-    id 'androidx.navigation.safeargs'
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
@@ -53,4 +53,5 @@ dependencies {
     implementation 'com.google.dagger:dagger-android-support:2.44.2'
     kapt 'com.google.dagger:dagger-compiler:2.44.2'
     kapt 'com.google.dagger:dagger-android-processor:2.44.2'
+    implementation 'com.google.code.gson:gson:2.9.0'
 }
