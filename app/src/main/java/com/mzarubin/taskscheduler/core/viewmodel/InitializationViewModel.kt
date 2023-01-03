@@ -5,21 +5,30 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.mzarubin.taskscheduler.core.repository.IInitializationRepository
 import com.mzarubin.taskscheduler.datamodel.InitializationState
+import com.mzarubin.taskscheduler.datamodel.InternalNavigationDataModel
 import com.mzarubin.taskscheduler.datamodel.LoadingState
+import com.mzarubin.taskscheduler.ui.initialization.fragment.InitializationFragmentDirections
+import com.mzarubin.taskscheduler.util.pendingDisplayLoading
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class InitializationViewModel @Inject constructor(
     private val initializationRepository: IInitializationRepository
 ) : BaseViewModel() {
-    private val _initializationStateLiveData: MutableLiveData<InitializationState> =
-        MutableLiveData()
-    val initializationLiveData: LiveData<InitializationState> = _initializationStateLiveData
+    private val _loadingStateLiveData: MutableLiveData<LoadingState> = MutableLiveData()
+    val loadingStateLiveData: LiveData<LoadingState> = _loadingStateLiveData
 
     private var initializationState: InitializationState? = null
+    private var loadingShouldDisplayed = false
+    private lateinit var loadingJob: Job
 
-    fun handleOnCreateView() {
+    fun handleOnViewCreated() {
         _loadingStateLiveData.postValue(LoadingState.INACTIVE)
+        loadingJob = pendingDisplayLoading(viewModelScope) {
+            loadingShouldDisplayed = it
+            onStateChanged()
+        }
 
         viewModelScope.launch {
             initializationState = if (initializationRepository.isFirstLaunchApplication()) {
@@ -32,17 +41,41 @@ class InitializationViewModel @Inject constructor(
                     InitializationState.AUTHORIZATION_REQUIRED
                 }
             }
-            if (!loadingShouldDisplayed) {
-                loadingJobFinished()
-            }
+            onStateChanged()
         }
     }
 
-    override fun loadingJobFinished() {
-        super.loadingJobFinished()
-        initializationState?.let {
-            _loadingStateLiveData.postValue(LoadingState.INACTIVE)
-            _initializationStateLiveData.postValue(it)
+    private fun onStateChanged() {
+        if (loadingShouldDisplayed) {
+            _loadingStateLiveData.postValue(LoadingState.ACTIVE)
+        } else {
+            if (!loadingJob.isCancelled) {
+                loadingJob.cancel()
+            }
+            initializationState?.let {
+                _loadingStateLiveData.postValue(LoadingState.INACTIVE)
+                when (it) {
+                    InitializationState.FIRST_LAUNCH_APPLICATION -> {
+                        _internalNavigationLiveData.postValue(
+                            InternalNavigationDataModel(
+                                InitializationFragmentDirections.actionInitializationFragmentToAuthorizationFragment(
+                                    true
+                                )
+                            )
+                        )
+                    }
+                    InitializationState.AUTHORIZATION_REQUIRED -> {
+                        _internalNavigationLiveData.postValue(
+                            InternalNavigationDataModel(
+                                InitializationFragmentDirections.actionInitializationFragmentToAuthorizationFragment()
+                            )
+                        )
+                    }
+                    InitializationState.AUTHORIZATION_IS_NOT_REQUIRED -> {
+                        //TODO: open Main Activity
+                    }
+                }
+            }
         }
     }
 }

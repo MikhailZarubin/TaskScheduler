@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/initialization_fragment">
+
+    <fragment
+        android:id="@+id/initialization_fragment"
+        android:name="com.mzarubin.taskscheduler.ui.initialization.fragment.InitializationFragment"
+        tools:layout="@layout/fragment_initialization">
+        <action
+            android:id="@+id/action_initialization_fragment_to_authorization_fragment"
+            app:destination="@id/authorization_fragment"
+            app:popUpTo="@id/initialization_fragment"
+            app:popUpToInclusive="true">
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/authorization_fragment"
+        android:name="com.mzarubin.taskscheduler.ui.initialization.fragment.AuthorizationFragment"
+        tools:layout="@layout/fragment_authorization">
+        <argument
+            android:name="isFirstLaunch"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <action
+            android:id="@+id/action_authorization_fragment_to_welcome_dialog"
+            app:destination="@id/welcome_dialog" />
+        <action
+            android:id="@+id/action_authorization_fragment_to_sign_up_fragment"
+            app:destination="@id/sign_up_fragment" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/welcome_dialog"
+        android:name="com.mzarubin.taskscheduler.ui.initialization.fragment.WelcomeFragment"
+        tools:layout="@layout/fragment_welcome" />
+
+    <fragment
+        android:id="@+id/sign_up_fragment"
+        android:name="com.mzarubin.taskscheduler.ui.initialization.fragment.SignUpFragment"
+        tools:layout="@layout/fragment_sign_up">
+        <action
+            android:id="@+id/action_sign_up_fragment_back_to_authorization_fragment"
+            app:destination="@id/authorization_fragment"
+            app:popUpTo="@id/authorization_fragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
+
+</navigation>

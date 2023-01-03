@@ -1,4 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="welcome_text_margin">50dp</dimen>
+    <dimen name="welcome_text_padding">20dp</dimen>
+    <dimen name="welcome_text_size">24sp</dimen>
+
+    <dimen name="auth_input_field_width">200dp</dimen>
+    <dimen name="auth_input_field_text_size">22sp</dimen>
+    <dimen name="auth_button_width">150dp</dimen>
+    <dimen name="auth_button_text_size">22sp</dimen>
+
+    <dimen name="sign_up_header_text_size">22sp</dimen>
+    <dimen name="sign_up_header_top_margin">25dp</dimen>
+    <dimen name="sign_up_fields_padding">25dp</dimen>
+    <dimen name="sign_up_description_field_text_size">18sp</dimen>
+    <dimen name="sign_up_input_filed_width">200dp</dimen>
+    <dimen name="sign_up_input_field_text_size">18sp</dimen>
+    <dimen name="sign_up_done_button_width">150dp</dimen>
+    <dimen name="sign_up_done_button_bottom_margin">25dp</dimen>
+    <dimen name="sign_up_done_button_text_size">22sp</dimen>
 </resources>
