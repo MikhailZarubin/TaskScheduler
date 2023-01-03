@@ -8,6 +8,7 @@ import com.mzarubin.taskscheduler.datamodel.AccountPrimaryDataModel
 import com.mzarubin.taskscheduler.datamodel.InternalError
 import com.mzarubin.taskscheduler.util.PRIMARY_ACCOUNTS_INFO_KEY
 import com.mzarubin.taskscheduler.util.TaskSchedulerThrowable
+import com.mzarubin.taskscheduler.util.USER_ID_KEY
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -16,16 +17,18 @@ class AccountRepository @Inject constructor(
     private val sharedPreferences: SharedPreferences
 ) : IAccountRepository {
     private val jsonConverter = Gson()
-    private var cachedPrimaryInfo: AccountPrimaryDataModel? = null
+
+    private var _cachedPrimaryInfo: AccountPrimaryDataModel? = null
+    private val cachedPrimaryInfo: AccountPrimaryDataModel get() = _cachedPrimaryInfo!!
 
     override suspend fun isAccountExist(accountId: String): Boolean {
         initializeCache(accountId)
-        return cachedPrimaryInfo != null
+        return _cachedPrimaryInfo != null
     }
 
     @SuppressLint("MutatingSharedPrefs")
     override suspend fun createAccount(accountId: String, password: String) {
-        if (cachedPrimaryInfo != null) {
+        if (_cachedPrimaryInfo != null) {
             throw TaskSchedulerThrowable(InternalError.SAME_LOGIN_FOUND)
         }
         val primaryAccountsInfo =
@@ -44,11 +47,12 @@ class AccountRepository @Inject constructor(
     }
 
     override suspend fun authorization(encodedPassword: String): String? {
-        if (cachedPrimaryInfo == null) {
+        if (_cachedPrimaryInfo == null) {
             throw TaskSchedulerThrowable(InternalError.IS_NOT_CHECKED_EXIST)
         }
-        return if (cachedPrimaryInfo?.password == encodedPassword) {
-            cachedPrimaryInfo?.password
+        return if (cachedPrimaryInfo.password == encodedPassword) {
+            setUserId(cachedPrimaryInfo.accountId)
+            cachedPrimaryInfo.password
         } else {
             null
         }
@@ -63,7 +67,13 @@ class AccountRepository @Inject constructor(
                 AccountPrimaryDataModel::class.java
             ).accountId == accountId
         }?.apply {
-            cachedPrimaryInfo = jsonConverter.fromJson(this, AccountPrimaryDataModel::class.java)
+            _cachedPrimaryInfo = jsonConverter.fromJson(this, AccountPrimaryDataModel::class.java)
         }
+    }
+
+    private fun setUserId(accountId: String) {
+        val editor = sharedPreferences.edit()
+        editor.putString(USER_ID_KEY, accountId)
+        editor.apply()
     }
 }
