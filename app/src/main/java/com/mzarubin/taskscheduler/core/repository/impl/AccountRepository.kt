@@ -52,10 +52,14 @@ class AccountRepository @Inject constructor(
         }
         return if (cachedPrimaryInfo.password == encodedPassword) {
             setUserId(cachedPrimaryInfo.accountId)
-            cachedPrimaryInfo.password
+            cachedPrimaryInfo.accountId
         } else {
             null
         }
+    }
+
+    override suspend fun signOut() {
+        setUserId(null)
     }
 
     private fun initializeCache(accountId: String) {
@@ -71,7 +75,7 @@ class AccountRepository @Inject constructor(
         }
     }
 
-    private fun setUserId(accountId: String) {
+    private fun setUserId(accountId: String?) {
         val editor = sharedPreferences.edit()
         editor.putString(USER_ID_KEY, accountId)
         editor.apply()

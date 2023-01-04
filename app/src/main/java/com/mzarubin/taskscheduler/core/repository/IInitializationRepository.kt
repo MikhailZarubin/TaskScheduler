@@ -4,4 +4,5 @@ interface IInitializationRepository {
     suspend fun isFirstLaunchApplication(): Boolean
     suspend fun isUserAuthorized(): Boolean
     suspend fun clearFirstLaunchState()
+    suspend fun getUserId(): String?
 }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="true">
+        <layer-list>
+            <item android:gravity="bottom|center_horizontal">
+                <shape android:shape="rectangle">
+                    <size android:width="@dimen/tab_bar_underline_width" android:height="@dimen/tab_bar_underline_height" />
+                    <solid android:color="@color/main" />
+                    <corners android:radius="@dimen/tab_bar_underline_corner_radius" />
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+    <item android:drawable="@color/gray_bg" android:state_focused="true" />
+</selector>

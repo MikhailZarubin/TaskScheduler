@@ -1,14 +1,18 @@
 package com.mzarubin.taskscheduler.core.viewmodel
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.mzarubin.taskscheduler.R
 import com.mzarubin.taskscheduler.core.repository.IAccountRepository
+import com.mzarubin.taskscheduler.datamodel.ExternalNavigationDataModel
 import com.mzarubin.taskscheduler.datamodel.InternalNavigationDataModel
 import com.mzarubin.taskscheduler.ui.initialization.fragment.AuthorizationFragmentArgs
 import com.mzarubin.taskscheduler.ui.initialization.fragment.AuthorizationFragmentDirections
+import com.mzarubin.taskscheduler.ui.main.MainActivity
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -34,8 +38,16 @@ class AuthorizationViewModel @Inject constructor(
                 _toastIdLiveData.postValue(R.string.account_not_found)
             } else {
                 //TODO: Need to add password encryption
-                if (accountRepository.authorization(password.toString()) != null) {
-                    //TODO: open Main Activity
+                val userId = accountRepository.authorization(password.toString())
+                Log.d("Misha", userId.toString())
+                if (userId != null) {
+                    _externalNavigationLivaData.postValue(
+                        ExternalNavigationDataModel(
+                            MainActivity::class,
+                            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK,
+                            userId
+                        )
+                    )
                 } else {
                     _toastIdLiveData.postValue(R.string.incorrect_account_info)
                 }

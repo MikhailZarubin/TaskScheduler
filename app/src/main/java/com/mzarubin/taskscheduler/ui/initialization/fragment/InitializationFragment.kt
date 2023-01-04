@@ -28,7 +28,6 @@ class InitializationFragment : NavigationFragment<InitializationViewModel>() {
     override fun initViewModel(): BaseViewModel {
         val viewModel = ViewModelProvider(this, viewModelFactory)[InitializationViewModel::class.java]
         viewModel.handleOnViewCreated()
-
         viewModel.loadingStateLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 LoadingState.ACTIVE -> binding.loadingProgressBar.visibility = View.VISIBLE

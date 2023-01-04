@@ -5,7 +5,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-fun pendingDisplayLoading(scope: CoroutineScope, loadingCallback: (Boolean) -> Unit): Job {
+fun pendingDisplayLoading(scope: CoroutineScope, loadingCallback: suspend (Boolean) -> Unit): Job {
     return scope.launch {
         delay(INSTANT_LOAD_TIMEOUT_MS)
         loadingCallback(true)

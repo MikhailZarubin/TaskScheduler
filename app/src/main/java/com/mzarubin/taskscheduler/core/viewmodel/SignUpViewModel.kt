@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.mzarubin.taskscheduler.R
 import com.mzarubin.taskscheduler.core.repository.IAccountRepository
+import com.mzarubin.taskscheduler.core.repository.IUserDataRepository
 import com.mzarubin.taskscheduler.datamodel.InternalNavigationDataModel
 import com.mzarubin.taskscheduler.datamodel.SignUpFields
 import com.mzarubin.taskscheduler.ui.initialization.fragment.SignUpFragmentDirections
@@ -12,7 +13,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SignUpViewModel @Inject constructor(
-    private val accountRepository: IAccountRepository
+    private val accountRepository: IAccountRepository,
+    private val userDataRepository: IUserDataRepository
 ) : BaseViewModel() {
     private val _toastIdLiveData: MutableLiveData<Int> = MutableLiveData()
     val toastIdLiveData: LiveData<Int> = _toastIdLiveData
@@ -48,6 +50,14 @@ class SignUpViewModel @Inject constructor(
                 accountRepository.createAccount(
                     login,
                     password
+                )
+
+                val name = SignUpFields.NAME.input ?: ""
+                val surname = SignUpFields.SURNAME.input ?: ""
+                userDataRepository.createUser(
+                    login,
+                    name,
+                    surname
                 )
                 _internalNavigationLiveData.postValue(
                     InternalNavigationDataModel(

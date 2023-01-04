@@ -2,9 +2,7 @@ package com.mzarubin.taskscheduler.di.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.mzarubin.taskscheduler.core.viewmodel.AuthorizationViewModel
-import com.mzarubin.taskscheduler.core.viewmodel.InitializationViewModel
-import com.mzarubin.taskscheduler.core.viewmodel.SignUpViewModel
+import com.mzarubin.taskscheduler.core.viewmodel.*
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -28,4 +26,14 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SignUpViewModel::class)
     abstract fun bindSignUpViewModel(signUpViewModel: SignUpViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ProfileViewModel::class)
+    abstract fun bindProfileViewModel(profileViewModel: ProfileViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SettingsViewModel::class)
+    abstract fun bindSettingsViewModel(settingsViewModel: SettingsViewModel): ViewModel
 }

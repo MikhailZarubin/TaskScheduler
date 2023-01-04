@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tab_bar_navigation"
+    app:startDestination="@+id/profile_navigation">
+
+    <include app:graph="@navigation/profile_navigation" />
+    <include app:graph="@navigation/to_do_list_navigation" />
+    <include app:graph="@navigation/settings_navigation" />
+</navigation>

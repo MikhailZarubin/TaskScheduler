@@ -1,13 +1,16 @@
 package com.mzarubin.taskscheduler.core.viewmodel
 
+import android.content.Intent
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.mzarubin.taskscheduler.core.repository.IInitializationRepository
+import com.mzarubin.taskscheduler.datamodel.ExternalNavigationDataModel
 import com.mzarubin.taskscheduler.datamodel.InitializationState
 import com.mzarubin.taskscheduler.datamodel.InternalNavigationDataModel
 import com.mzarubin.taskscheduler.datamodel.LoadingState
 import com.mzarubin.taskscheduler.ui.initialization.fragment.InitializationFragmentDirections
+import com.mzarubin.taskscheduler.ui.main.MainActivity
 import com.mzarubin.taskscheduler.util.pendingDisplayLoading
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -45,7 +48,7 @@ class InitializationViewModel @Inject constructor(
         }
     }
 
-    private fun onStateChanged() {
+    private suspend fun onStateChanged() {
         if (loadingShouldDisplayed) {
             _loadingStateLiveData.postValue(LoadingState.ACTIVE)
         } else {
@@ -72,7 +75,13 @@ class InitializationViewModel @Inject constructor(
                         )
                     }
                     InitializationState.AUTHORIZATION_IS_NOT_REQUIRED -> {
-                        //TODO: open Main Activity
+                        _externalNavigationLivaData.postValue(
+                            ExternalNavigationDataModel(
+                                MainActivity::class,
+                                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK,
+                                initializationRepository.getUserId()
+                            )
+                        )
                     }
                 }
             }

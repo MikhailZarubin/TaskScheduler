@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/profile_navigation"
+        android:icon="@drawable/icon_user"
+        android:title="@string/profile_title" />
+
+    <item
+        android:id="@+id/to_do_list_navigation"
+        android:icon="@drawable/icon_to_do_list"
+        android:title="@string/to_do_list_title" />
+
+    <item
+        android:id="@+id/settings_navigation"
+        android:icon="@drawable/icon_setting"
+        android:title="@string/settings_title" />
+</menu>

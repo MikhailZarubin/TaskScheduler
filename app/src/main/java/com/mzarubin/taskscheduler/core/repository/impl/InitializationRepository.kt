@@ -24,4 +24,6 @@ class InitializationRepository @Inject constructor(
         editor?.putBoolean(IS_FIRST_LAUNCH_KEY, false)
         editor?.apply()
     }
+
+    override suspend fun getUserId(): String? = sharedPreferences.getString(USER_ID_KEY, null)
 }
