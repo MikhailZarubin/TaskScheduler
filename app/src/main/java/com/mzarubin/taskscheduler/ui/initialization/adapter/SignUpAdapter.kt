@@ -6,11 +6,14 @@ import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.RecyclerView
 import com.mzarubin.taskscheduler.databinding.ItemSignUpBinding
+import com.mzarubin.taskscheduler.datamodel.SignUpFieldDataModel
 import com.mzarubin.taskscheduler.datamodel.SignUpFields
 
-class SignUpAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class SignUpAdapter(private val signUpFields: List<SignUpFieldDataModel>) :
+    RecyclerView.Adapter<SignUpAdapter.SignUpViewHolder>() {
+    fun getSignUpFields() = signUpFields
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SignUpViewHolder {
         val binding = ItemSignUpBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
@@ -19,8 +22,8 @@ class SignUpAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         return SignUpViewHolder(binding, parent.context)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as SignUpViewHolder).bind(SignUpFields.values()[position])
+    override fun onBindViewHolder(holder: SignUpViewHolder, position: Int) {
+        holder.bind(signUpFields[position])
     }
 
     override fun getItemCount(): Int = SignUpFields.values().size
@@ -30,11 +33,11 @@ class SignUpAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private val context: Context
     ) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(field: SignUpFields) {
-            binding.headerField.text = context.getString(field.headerId)
-            field.inputType?.let { binding.inputField.inputType = it }
+        fun bind(field: SignUpFieldDataModel) {
+            binding.headerField.text = context.getString(field.info.headerId)
+            field.info.inputType?.let { binding.inputField.inputType = it }
             binding.inputField.addTextChangedListener {
-                field.input = it.toString()
+                field.data = it.toString()
             }
         }
     }

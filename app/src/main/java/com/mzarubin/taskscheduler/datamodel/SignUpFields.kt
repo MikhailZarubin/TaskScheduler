@@ -3,7 +3,7 @@ package com.mzarubin.taskscheduler.datamodel
 import android.text.InputType
 import com.mzarubin.taskscheduler.R
 
-enum class SignUpFields(val headerId: Int, val inputType: Int? = null, var input: String? = null) {
+enum class SignUpFields(val headerId: Int, val inputType: Int? = null) {
     NAME(R.string.field_name),
     SURNAME(R.string.field_surname),
     LOGIN(R.string.field_login),

@@ -11,14 +11,10 @@ import com.mzarubin.taskscheduler.core.viewmodel.BaseViewModel
 import com.mzarubin.taskscheduler.core.viewmodel.SignUpViewModel
 import com.mzarubin.taskscheduler.databinding.FragmentSignUpBinding
 import com.mzarubin.taskscheduler.ui.NavigationFragment
-import com.mzarubin.taskscheduler.ui.initialization.adapter.SignUpAdapter
 
 class SignUpFragment : NavigationFragment<SignUpViewModel>() {
     private var _binding: FragmentSignUpBinding? = null
     private val binding: FragmentSignUpBinding get() = _binding!!
-
-    private var _adapter: SignUpAdapter? = null
-    private val adapter: SignUpAdapter get() = _adapter!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,20 +29,21 @@ class SignUpFragment : NavigationFragment<SignUpViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        _adapter = SignUpAdapter()
         binding.signUpFields.layoutManager = LinearLayoutManager(requireContext())
-        binding.signUpFields.adapter = adapter
     }
 
     override fun onDestroyView() {
         _binding = null
-        _adapter = null
         super.onDestroyView()
     }
 
     override fun initViewModel(): BaseViewModel {
         val viewModel = ViewModelProvider(this, viewModelFactory)[SignUpViewModel::class.java]
+        viewModel.handleOnViewCreated()
 
+        viewModel.adapterLiveData.observe(viewLifecycleOwner) {
+            binding.signUpFields.adapter = it
+        }
         viewModel.toastIdLiveData.observe(viewLifecycleOwner) {
             Toast.makeText(
                 requireContext(),
@@ -54,6 +51,7 @@ class SignUpFragment : NavigationFragment<SignUpViewModel>() {
                 Toast.LENGTH_SHORT
             ).show()
         }
+
         binding.doneButton.setOnClickListener {
             viewModel.handleClickingOnDone()
         }
